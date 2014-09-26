@@ -40,11 +40,17 @@ describe("About Applying What We Have Learnt", function() {
       var productsICanEat = [];
 
       /* solve using filter() & all() / any() */
+      //Looks through all ingredients for each product
  	 productsICanEat = _.filter(products,function(oneProduct){
- 	 	 var item = _.any(oneProduct["ingredients"],function(oneIngredient){
+ 	 	 
+ 	 	 //Checks product ingredients for mushrooms
+ 	 	 var hasMushroom = _.any(oneProduct["ingredients"],function(oneIngredient){
+ 	 	 	//Return true if any of the ingredients for a product has mushrooms
  	 		return oneIngredient==="mushrooms";
  	 		});
- 	 	if(!oneProduct["containsNuts"] && !item){
+ 	 	//Checks product if ingredients has mushroom and contains nuts	
+ 	 	//Returns true if does not have musthroom and does not have nuts
+ 	 	if(!oneProduct["containsNuts"] && !hasMushroom){
  	 		return true;
  	 		}
  	 	else{
@@ -69,12 +75,14 @@ describe("About Applying What We Have Learnt", function() {
   });
 
   it("should add all the natural numbers below 1000 that are multiples of 3 or 5 (functional)", function () {
-
+	//Reduce to a single value for a range of 1-1000 return sum of multiples of 3 or 5
     var sum = _.reduce(_.range(1,1000,1),function(total, memo){
+    	//Conditional check
     	if (memo % 3 === 0 || memo % 5 === 0) {
         	return total+=memo;
         }
         else{
+        	//If not a multiple, return total with no change
         	return total;
         	}
       }
@@ -103,13 +111,18 @@ describe("About Applying What We Have Learnt", function() {
     
     
   ingredientCount = _.chain(products)
+  	//Places ingredients array from each object into an array
   	.map(function(value, key, product){return value.ingredients;})
+  	//Flattens each array into a single array
   	.flatten()
-  	.reduce(function(memo, item){ 
-    	memo[item] = memo[item] + 1 || 1;
-    	return memo;
-		},{})
-  	.value();
+  	//Reduces each array item into an object and counts each item of array
+  	.reduce(function(ingredientcount, ingredient){ 
+  		//Goes thru array and checks to see if 
+  		//there is an ingredient, if not set to 1 or else add to existing ingredient
+    	ingredientcount[ingredient] = ingredientcount[ingredient] + 1 || 1;
+    	return ingredientcount;
+		},{}) //Sets initial list to an empty object type
+  	.value(); //Complete function
   	
     expect(ingredientCount['mushrooms']).toBe(2);
   });
